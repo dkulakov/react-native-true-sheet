@@ -19,6 +19,7 @@ const MapScreenWrapper = () => {
     <MapScreen
       MapComponent={Map}
       onNavigateToModal={() => navigation.navigate('ModalStack')}
+      onNavigateToScrollView={() => navigation.navigate('ScrollViewDemo')}
       onNavigateToSheetStack={() => navigation.navigate('SheetStack')}
       onNavigateToTest={() => navigation.navigate('Test')}
       onNavigateToTestStack={() => navigation.navigate('TestStack')}

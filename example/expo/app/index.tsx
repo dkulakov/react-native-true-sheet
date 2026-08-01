@@ -10,6 +10,7 @@ export default function Index() {
     <MapScreen
       MapComponent={Map}
       onNavigateToModal={() => router.push('/modal')}
+      onNavigateToScrollView={() => router.push('/scrollview')}
       onNavigateToSheetStack={() => router.push('/sheet')}
       onNavigateToTest={() => router.push('/test')}
       onNavigateToTestStack={() => router.push('/test-stack')}

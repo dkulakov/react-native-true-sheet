@@ -79,6 +79,7 @@ const LogLine = ({ text }: { text: string }) => {
 export interface MapScreenProps {
   MapComponent: ComponentType<{ style?: StyleProp<ViewStyle> }>;
   onNavigateToModal?: () => void;
+  onNavigateToScrollView?: () => void;
   onNavigateToSheetStack?: () => void;
   onNavigateToTest?: () => void;
   onNavigateToTestStack?: () => void;
@@ -87,6 +88,7 @@ export interface MapScreenProps {
 const MapScreenInner = ({
   MapComponent,
   onNavigateToModal,
+  onNavigateToScrollView,
   onNavigateToSheetStack,
   onNavigateToTest,
   onNavigateToTestStack,
@@ -240,6 +242,7 @@ const MapScreenInner = ({
           onPress={() => presentBasicSheet(0)}
           onLongPress={rapidPresentDismiss}
         />
+        <Button text="Open ScrollView Screen" onPress={onNavigateToScrollView} />
         <Button text="Open Modal" onPress={onNavigateToModal} />
         <Button text="Sheet Navigator" onPress={onNavigateToSheetStack} />
         {isTablet && (

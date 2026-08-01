@@ -7,3 +7,4 @@ export * from './Spacer';
 export * from './Input';
 export * from './Map';
 export * from './SwipeButton';
+export * from './DemoList';

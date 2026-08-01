@@ -5,6 +5,7 @@ export type AppStackParamList = {
   Test: undefined;
   ModalStack: undefined;
   TestStack: undefined;
+  ScrollViewDemo: undefined;
 };
 
 export type ModalStackParamList = {

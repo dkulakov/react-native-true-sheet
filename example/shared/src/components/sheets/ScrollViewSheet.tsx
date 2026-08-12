@@ -23,13 +23,41 @@ import {
   SPACING,
   times,
 } from '../../utils';
-import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Button } from '../Button';
 
 interface ScrollViewSheetProps extends TrueSheetProps {}
 
 const HeavyItem = ({ index }: { index: number }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const sheet = useRef<TrueSheet>(null);
+
+  return (
+    <View style={[styles.item, styles.nonPressableItem]}>
+      <View style={styles.imageContainer}>
+        {!imageLoaded && <ActivityIndicator style={styles.loader} size="small" />}
+        <Image
+          source={{ uri: `https://picsum.photos/seed/${index}/400/300` }}
+          style={styles.image}
+          onLoad={() => setImageLoaded(true)}
+        />
+      </View>
+      <View style={styles.itemContent}>
+        <Text style={styles.itemTitle}>Item #{index + 1}</Text>
+        <Text style={styles.itemDescription}>
+          Complex component with images and text to test heavy rendering and lazy loading.
+        </Text>
+      </View>
+      <TrueSheet ref={sheet} detents={[0.5]} backgroundColor={Platform.select({ android: DARK })}>
+        <View style={styles.placeholder}>
+          <Text style={styles.placeholderText}>Sheet content</Text>
+        </View>
+      </TrueSheet>
+    </View>
+  );
+};
+
+const PressableHeavyItem = ({ index }: { index: number }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const sheet = useRef<TrueSheet>(null);
 
@@ -61,6 +89,7 @@ const HeavyItem = ({ index }: { index: number }) => {
 export const ScrollViewSheet = forwardRef<TrueSheet, ScrollViewSheetProps>((props, ref) => {
   const [showList, setShowList] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [isPressableItems, setIsPressableItems] = useState(true);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -82,9 +111,13 @@ export const ScrollViewSheet = forwardRef<TrueSheet, ScrollViewSheetProps>((prop
       header={<Header />}
       headerStyle={styles.header}
       footer={
-        <Footer wrapperStyle={styles.footer}>
+        <View style={styles.footer}>
           <Button text="Toggle ListView" onPress={() => setShowList(!showList)} />
-        </Footer>
+          <Button
+            text="Toggle Pressable items"
+            onPress={() => setIsPressableItems(!isPressableItems)}
+          />
+        </View>
       }
       onDidDismiss={() => console.log('Sheet ScrollView dismissed!')}
       onDidPresent={() => console.log(`Sheet ScrollView presented!`)}
@@ -98,9 +131,13 @@ export const ScrollViewSheet = forwardRef<TrueSheet, ScrollViewSheetProps>((prop
           keyboardDismissMode="on-drag"
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
-          {times(20, (i) => (
-            <HeavyItem key={i} index={i} />
-          ))}
+          {times(20, (i) =>
+            isPressableItems ? (
+              <PressableHeavyItem key={i} index={i} />
+            ) : (
+              <HeavyItem key={i} index={i} />
+            )
+          )}
         </ScrollView>
       ) : (
         <View style={styles.placeholder}>
@@ -127,6 +164,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   footer: {
+    padding: 20,
+    gap: 20,
     backgroundColor: Platform.select({
       default: DARK_GRAY,
       ios: undefined,
@@ -136,6 +175,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     borderRadius: BORDER_RADIUS,
     overflow: 'hidden',
+  },
+  nonPressableItem: {
+    backgroundColor: 'rgba(0, 0, 255, 0.3)',
   },
   imageContainer: {
     width: '100%',

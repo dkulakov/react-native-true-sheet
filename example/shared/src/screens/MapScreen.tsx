@@ -234,12 +234,19 @@ const MapScreenInner = ({
           <Text style={styles.title}>True Sheet</Text>
           <Text style={styles.subtitle}>The true native bottom sheet experience.</Text>
         </View>
-        <Button
-          text="TrueSheet View"
-          hint="Long press to stress test"
-          onPress={() => presentBasicSheet(0)}
-          onLongPress={rapidPresentDismiss}
-        />
+        <View style={{ zIndex: 1 }}>
+          <Button
+            text="TrueSheet View"
+            hint="Long press to stress test"
+            onPress={() => presentBasicSheet(0)}
+            onLongPress={rapidPresentDismiss}
+          />
+          <BasicSheet
+            ref={basicSheet}
+            onNavigateToModal={onNavigateToModal}
+            onNavigateToTest={onNavigateToTest}
+          />
+        </View>
         <Button text="Open Modal" onPress={onNavigateToModal} />
         <Button text="Sheet Navigator" onPress={onNavigateToSheetStack} />
         {isTablet && (
@@ -279,11 +286,6 @@ const MapScreenInner = ({
           <Button text="Collapse" onPress={() => sheetRef.current?.resize(0)} />
           <Button text="Dismiss" onPress={() => sheetRef.current?.dismiss()} />
         </ButtonGroup>
-        <BasicSheet
-          ref={basicSheet}
-          onNavigateToModal={onNavigateToModal}
-          onNavigateToTest={onNavigateToTest}
-        />
         <PromptSheet ref={promptSheet} />
         <ScrollViewSheet ref={scrollViewSheet} />
         <FlatListSheet ref={flatListSheet} />
